@@ -30,8 +30,7 @@ public void OnPluginStart()
 public Action TextMsg(UserMsg msg_id, BfRead msg, const int[] players, int playersNum, bool reliable, bool init) {
     char Text[64];
     PbReadString(msg, "params", Text, sizeof(Text), 0);
-    if(StrContains(Text, "teammate_attack") != -1)
-    {
+    if(StrContains(Text, "teammate_attack") != -1 && GetConVarBool(g_bIgnoreFFMessage)) {
         return Plugin_Handled;
     }
     
@@ -41,8 +40,9 @@ public Action TextMsg(UserMsg msg_id, BfRead msg, const int[] players, int playe
 public Action OnPlayerSay(int client, const char[] command,int argc) {
     char buff[2];
     GetCmdArg(1, buff, sizeof(buff));
-    if(StrEqual(buff[0], "/")) {
+    if(StrEqual(buff[0], "/") && GetConVarBool(g_bIgnoreSlash)) {
         return Plugin_Handled;
     }
+    
     return Plugin_Continue;
 }
